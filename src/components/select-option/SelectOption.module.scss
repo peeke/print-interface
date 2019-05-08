@@ -1,0 +1,33 @@
+@import 'scss/constants.scss';
+@import 'scss/typography.scss';
+
+.wrapper {
+  strong {
+    display: block;
+  }
+}
+
+.labels {
+  display: flex;
+  margin-bottom: $spacing-s;
+}
+
+.label {
+  @include font-body;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  margin-right: $spacing-s;
+  color: $color-washed-grey;
+  transition: color $pace-fast;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &[aria-pressed='true'] {
+    @include font-bold;
+    color: inherit;
+  }
+}

@@ -8,15 +8,32 @@ import TextBody from 'components/text/TextBody'
 import Price from 'components/price/Price'
 import Link from 'components/link/Link'
 import Button from 'components/button/Button'
+import SelectSize from 'components/containers/select-size/SelectSize'
 
 // Normally this would be loaded from a database or (headless) CMS
 import print from 'assets/annie-spratt-695511-unsplash.jpg'
+
+export default function Page() {
+  return (
+    <PrintDetail
+      window={PrintDetailWindow()}
+      description={PrintDetailDescription()}
+      specification={PrintDetailSpecification()}
+      purchase={PrintDetailPurchase()}
+      backButton={
+        <Link to="/" washed>
+          Back
+        </Link>
+      }
+    />
+  )
+}
 
 function PrintDetailWindow() {
   return <DisplayWindow src={print} description="Light — 01 (A4)" />
 }
 
-function PrintDetailBodyTop() {
+function PrintDetailDescription() {
   return (
     <>
       <TextHeading
@@ -32,26 +49,15 @@ function PrintDetailBodyTop() {
   )
 }
 
-function PrintDetailBodyBottom() {
+function PrintDetailSpecification() {
   return (
     <>
+      <SelectSize selected={1} />
       <Price amount={3500} currency="£" />
-      <Button type="primary">Purchase</Button>
     </>
   )
 }
 
-export default function Page() {
-  return (
-    <PrintDetail
-      window={PrintDetailWindow()}
-      bodyTop={PrintDetailBodyTop()}
-      bodyBottom={PrintDetailBodyBottom()}
-      backButton={
-        <Link to="/" washed>
-          Back
-        </Link>
-      }
-    />
-  )
+function PrintDetailPurchase() {
+  return <Button type="primary">Purchase</Button>
 }

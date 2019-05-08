@@ -6,11 +6,12 @@ function PrintDetail(props) {
   return (
     <div className={style.template}>
       <div className={style.window}>{props.window}</div>
-      <div className={style.body}>
-        <div className={style.bodyTop}>{props.bodyTop}</div>
-        <div className={style.bodyBottom}>{props.bodyBottom}</div>
+      <form className={style.body}>
+        <div className={style.description}>{props.description}</div>
+        <div className={style.specification}>{props.specification}</div>
+        <div className={style.purchase}>{props.purchase}</div>
         <div className={style.backButton}>{props.backButton}</div>
-      </div>
+      </form>
     </div>
   )
 }

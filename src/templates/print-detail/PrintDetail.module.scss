@@ -24,13 +24,21 @@
   padding: $spacing-prop;
 }
 
-.bodyTop {
+.description {
   margin-top: $spacing-l;
   margin-bottom: $spacing-xl;
 }
 
-.bodyBottom {
+.specification {
   margin-top: auto;
+
+  > * {
+    margin-top: $spacing-m;
+  }
+}
+
+.purchase {
+  margin-top: $spacing-prop;
   margin-bottom: $spacing-l;
 }
 
