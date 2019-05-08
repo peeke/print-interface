@@ -9,11 +9,25 @@
   top: 0;
   width: 50%;
   height: 100vh;
-  padding: $spacing-l;
+  padding: $spacing-prop;
+  background-image: url(~assets/backdrop.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 .body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   width: 50%;
   min-height: 100vh;
-  padding: $spacing-l;
+  padding: ($spacing-prop * 2) $spacing-prop;
+}
+
+.bodyTop {
+  margin-bottom: $spacing-xl;
+}
+
+.bodyBottom {
+  margin-top: auto;
 }

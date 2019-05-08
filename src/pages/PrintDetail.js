@@ -12,28 +12,38 @@ import Button from 'components/button/Button'
 // Normally this would be loaded from a database or (headless) CMS
 import print from 'assets/annie-spratt-695511-unsplash.jpg'
 
-function App() {
+function PrintDetailWindow() {
+  return <DisplayWindow src={print} description="Light — 01 (A4)" />
+}
+
+function PrintDetailBodyTop() {
   return (
-    <PrintDetail>
-      <PrintDetail.Window>
-        <DisplayWindow src={print} description="Light — 01 (A4)" />
-      </PrintDetail.Window>
-      <PrintDetail.Body>
-        <TextHeading
-          level={1}
-          title="Light — 01 (A4)"
-          subtitle="Giclée Print"
-        />
-        <TextBody>
-          Price does not include shipping costs. Printed on high-quality
-          Hahnemühle Photo Rag fine art paper (308 gsm).
-        </TextBody>
-        <Price amount={3500} currency="pound" />
-        <Button type="primary">Purchase</Button>
-        <Link to="/">Back</Link>
-      </PrintDetail.Body>
-    </PrintDetail>
+    <>
+      <TextHeading level={1} title="Light — 01 (A4)" subtitle="Giclée Print" />
+      <TextBody>
+        Price does not include shipping costs. Printed on high-quality
+        Hahnemühle Photo Rag fine art paper (308 gsm).
+      </TextBody>
+      <Link to="/">Back</Link>
+    </>
   )
 }
 
-export default App
+function PrintDetailBodyBottom() {
+  return (
+    <>
+      <Price amount={3500} currency="pound" />
+      <Button type="primary">Purchase</Button>
+    </>
+  )
+}
+
+export default function Page() {
+  return (
+    <PrintDetail
+      window={PrintDetailWindow()}
+      bodyTop={PrintDetailBodyTop()}
+      bodyBottom={PrintDetailBodyBottom()}
+    />
+  )
+}
