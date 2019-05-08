@@ -9,6 +9,7 @@ function PrintDetail(props) {
       <div className={style.body}>
         <div className={style.bodyTop}>{props.bodyTop}</div>
         <div className={style.bodyBottom}>{props.bodyBottom}</div>
+        <div className={style.backButton}>{props.backButton}</div>
       </div>
     </div>
   )

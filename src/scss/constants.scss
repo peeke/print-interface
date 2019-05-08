@@ -1,3 +1,7 @@
+// Colors
+$color-washed-grey: #a4a4a4;
+
+// Spacings
 $spacing-xs: 0.66rem;
 $spacing-s: 1rem;
 $spacing-m: 1.5rem;
@@ -5,3 +9,16 @@ $spacing-l: 2.5rem;
 $spacing-xl: 4rem;
 
 $spacing-prop: 10vmin;
+
+// Transitions
+$pace-fast: 0.2s;
+$pace-normal: 0.35s;
+$pace-slow: 0.5s;
+
+// Easings
+$ease-in: ease-in;
+$ease-out: ease-out;
+$ease-in-out: ease-in-out;
+
+// Shadows
+$shadow-button: -2px 2px 5px rgba(black, 0.6);

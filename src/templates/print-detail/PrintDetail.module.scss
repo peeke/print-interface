@@ -21,13 +21,19 @@
   align-items: stretch;
   width: 50%;
   min-height: 100vh;
-  padding: ($spacing-prop * 2) $spacing-prop;
+  padding: $spacing-prop;
 }
 
 .bodyTop {
+  margin-top: $spacing-l;
   margin-bottom: $spacing-xl;
 }
 
 .bodyBottom {
   margin-top: auto;
+  margin-bottom: $spacing-l;
+}
+
+.backButton {
+  order: -1;
 }

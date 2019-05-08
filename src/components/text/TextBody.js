@@ -1,5 +1,7 @@
 import React from 'react'
 
+import style from './TextBody.module.scss'
+
 export default function TextBody(props) {
-  return <p>{props.children}</p>
+  return <div className={style.body}>{props.children}</div>
 }

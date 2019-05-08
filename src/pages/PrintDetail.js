@@ -19,12 +19,15 @@ function PrintDetailWindow() {
 function PrintDetailBodyTop() {
   return (
     <>
-      <TextHeading level={1} title="Light — 01 (A4)" subtitle="Giclée Print" />
+      <TextHeading
+        level={1}
+        title="Abstract Background (A4)"
+        subtitle="Giclée Print"
+      />
       <TextBody>
         Price does not include shipping costs. Printed on high-quality
         Hahnemühle Photo Rag fine art paper (308 gsm).
       </TextBody>
-      <Link to="/">Back</Link>
     </>
   )
 }
@@ -32,7 +35,7 @@ function PrintDetailBodyTop() {
 function PrintDetailBodyBottom() {
   return (
     <>
-      <Price amount={3500} currency="pound" />
+      <Price amount={3500} currency="£" />
       <Button type="primary">Purchase</Button>
     </>
   )
@@ -44,6 +47,11 @@ export default function Page() {
       window={PrintDetailWindow()}
       bodyTop={PrintDetailBodyTop()}
       bodyBottom={PrintDetailBodyBottom()}
+      backButton={
+        <Link to="/" washed>
+          Back
+        </Link>
+      }
     />
   )
 }

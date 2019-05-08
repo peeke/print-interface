@@ -1,0 +1,23 @@
+@import 'scss/constants.scss';
+@import 'scss/typography.scss';
+
+.h1 {
+  @include font-heading-1;
+}
+
+.h2 {
+  @include font-heading-2;
+}
+
+.h3 {
+  @include font-heading-3;
+}
+
+.heading {
+  margin-bottom: $spacing-m;
+}
+
+.subtitle {
+  @include font-bold;
+  font-size: 18px;
+}

@@ -1,0 +1,6 @@
+@import 'scss/typography.scss';
+
+.body {
+  @include font-body;
+  font-size: 18px;
+}
