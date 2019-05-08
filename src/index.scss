@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600|Volkhov');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Volkhov', serif;
+  font-weight: bold;
+}
+
+* {
+  box-sizing: inherit;
+}

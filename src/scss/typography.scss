@@ -1,0 +1,36 @@
+@mixin font-heading-1 {
+  font-family: 'Volkhov', serif;
+  font-weight: bold;
+  font-style: regular;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+@mixin font-heading-2 {
+  font-family: 'Volkhov', serif;
+  font-weight: bold;
+  font-style: regular;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+@mixin font-body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-style: regular;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+@mixin font-bold {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+@mixin font-small {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-style: regular;
+  font-size: 16px;
+  line-height: 1.5;
+}
