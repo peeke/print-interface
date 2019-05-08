@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
+
+import PrintDetail from 'pages/PrintDetail'
 
 function App() {
-  return (
-    <div className="App">
-      Hello world
-    </div>
-  );
+  return <PrintDetail />
 }
 
-export default App;
+export default App

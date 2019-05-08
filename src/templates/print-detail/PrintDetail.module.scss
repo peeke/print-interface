@@ -1,0 +1,19 @@
+@import 'scss/constants.scss';
+
+.template {
+  display: flex;
+}
+
+.window {
+  position: sticky;
+  top: 0;
+  width: 50%;
+  height: 100vh;
+  padding: $spacing-l;
+}
+
+.body {
+  width: 50%;
+  min-height: 100vh;
+  padding: $spacing-l;
+}
