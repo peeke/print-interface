@@ -20,11 +20,15 @@ const availableSizes = [
   }
 ]
 
-export default function SelectSize() {
+export default function SelectSize(props) {
   const labels = availableSizes.map(props => props.label)
 
   return (
-    <SelectOption selected={1} labels={labels}>
+    <SelectOption
+      labels={labels}
+      selected={props.selected}
+      onChange={props.onChange}
+    >
       {availableSizes.map(SelectSizeOption)}
     </SelectOption>
   )

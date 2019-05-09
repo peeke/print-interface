@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import PrintDetail from 'templates/print-detail/PrintDetail'
 
@@ -50,9 +50,11 @@ function PrintDetailDescription() {
 }
 
 function PrintDetailSpecification() {
+  const [selected, setSelected] = useState(1)
+
   return (
     <>
-      <SelectSize selected={1} />
+      <SelectSize selected={selected} onChange={setSelected} />
       <Price amount={3500} currency="£" />
     </>
   )
