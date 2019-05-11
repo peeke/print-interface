@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 
+import vertexShader from 'glsl/vertex/rollup.glsl'
+
 import calculateViewportHeight from 'utils/calculateViewportHeight'
 import fitBoundingBox from 'utils/fitBoundingBox'
 import calculateUvs from 'utils/calculateUvs'
@@ -19,6 +21,12 @@ export default class ThreeDisplayWindow {
   ratio = 0
 
   constructor(canvas, src) {
+    fetch(vertexShader)
+      .then(response => response.text())
+      .then(this.init.bind(null, canvas, src))
+  }
+
+  init = (canvas, src, vertexShader) => {
     this.canvas = canvas
 
     const { offsetWidth: width, offsetHeight: height } = canvas
@@ -38,7 +46,20 @@ export default class ThreeDisplayWindow {
     this.camera.position.z = 30
 
     const imageGeometry = this.createGeometry(100)
-    this.image = new THREE.Mesh(imageGeometry, new THREE.MeshBasicMaterial())
+    const uniforms = THREE.UniformsUtils.merge([
+      THREE.ShaderLib.basic.uniforms,
+      { time: { value: 0.0 } },
+      { diffuse: { value: new THREE.Color('white') } },
+      { map: { value: new THREE.Texture() } }
+    ])
+
+    const material = new THREE.ShaderMaterial({
+      ...THREE.ShaderLib.basic,
+      vertexShader,
+      uniforms
+    })
+
+    this.image = new THREE.Mesh(imageGeometry, material)
     this.scene.add(this.image)
 
     const light = new THREE.DirectionalLight(0xffffff, 1)
@@ -80,6 +101,7 @@ export default class ThreeDisplayWindow {
     this.src = src
 
     new THREE.TextureLoader().load(src, texture => {
+      this.image.material.uniforms.map.value = texture
       this.image.material.map = texture
       this.image.material.needsUpdate = true
       this.updateDimensions()
@@ -103,6 +125,7 @@ export default class ThreeDisplayWindow {
 
     const { width, height } = fitBoundingBox(boundingBox, texture.image)
     this.image.scale.set(width, height, 1)
+    this.image.material.needsUpdate = true
   }
 
   onResize = () => {
