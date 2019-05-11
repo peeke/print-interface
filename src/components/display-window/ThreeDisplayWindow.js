@@ -1,14 +1,14 @@
 import * as THREE from 'three'
 
-import vertexShader from 'glsl/vertex/rollup.glsl'
-
 import calculateViewportHeight from 'utils/calculateViewportHeight'
 import fitBoundingBox from 'utils/fitBoundingBox'
-import calculateUvs from 'utils/calculateUvs'
 import vmin from 'utils/vmin'
-import sequenceOf from 'utils/sequenceOf'
+import degToRad from 'utils/degToRad'
 
-const PERSPECTIVE = 75
+import vertexShader from './glsl/vertex/template.js'
+import rollupVertexChunk from './glsl/vertex/chunks/rollup_vertex.js'
+
+const PERSPECTIVE = 50
 
 export default class ThreeDisplayWindow {
   canvas = null
@@ -21,12 +21,6 @@ export default class ThreeDisplayWindow {
   ratio = 0
 
   constructor(canvas, src) {
-    fetch(vertexShader)
-      .then(response => response.text())
-      .then(this.init.bind(null, canvas, src))
-  }
-
-  init = (canvas, src, vertexShader) => {
     this.canvas = canvas
 
     const { offsetWidth: width, offsetHeight: height } = canvas
@@ -45,10 +39,10 @@ export default class ThreeDisplayWindow {
     )
     this.camera.position.z = 30
 
-    const imageGeometry = this.createGeometry(100)
+    const imageGeometry = new THREE.PlaneGeometry(1, 1, 100)
     const uniforms = THREE.UniformsUtils.merge([
       THREE.ShaderLib.basic.uniforms,
-      { time: { value: 0.0 } },
+      { rollupProgress: { value: 0 } },
       { diffuse: { value: new THREE.Color('white') } },
       { map: { value: new THREE.Texture() } }
     ])
@@ -56,11 +50,23 @@ export default class ThreeDisplayWindow {
     const material = new THREE.ShaderMaterial({
       ...THREE.ShaderLib.basic,
       vertexShader,
-      uniforms
+      uniforms,
+      side: THREE.DoubleSide
     })
+
+    material.onBeforeCompile = shader => {
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <rollup_vertex>',
+        rollupVertexChunk
+      )
+    }
 
     this.image = new THREE.Mesh(imageGeometry, material)
     this.scene.add(this.image)
+
+    window.progress = value => {
+      this.image.material.uniforms.rollupProgress.value = value
+    }
 
     const light = new THREE.DirectionalLight(0xffffff, 1)
     light.position.set(20, 10, 30)
@@ -72,28 +78,6 @@ export default class ThreeDisplayWindow {
     this.render()
 
     window.addEventListener('resize', this.onResize)
-  }
-
-  createGeometry(segments, width = 1, height = 1) {
-    const geometry = new THREE.Geometry()
-
-    geometry.vertices = sequenceOf(segments * 2).map(i => {
-      return new THREE.Vector3(
-        (i % 2) - width / 2,
-        Math.floor(i / 2) / segments - height / 2,
-        0
-      )
-    })
-
-    geometry.faces = sequenceOf(segments * 2 - 2).map(i => {
-      return i % 2 === 0
-        ? new THREE.Face3(i, i + 1, i + 2)
-        : new THREE.Face3(i, i + 2, i + 1) // Make sure we define our face with clockwise vertices
-    })
-
-    calculateUvs(geometry)
-
-    return geometry
   }
 
   setSrc(src) {
@@ -124,7 +108,7 @@ export default class ThreeDisplayWindow {
     }
 
     const { width, height } = fitBoundingBox(boundingBox, texture.image)
-    this.image.scale.set(width, height, 1)
+    this.image.scale.set(width, height, width)
     this.image.material.needsUpdate = true
   }
 
@@ -142,6 +126,9 @@ export default class ThreeDisplayWindow {
   }
 
   render = () => {
+    const progress = (1 + Math.sin(performance.now() / 400)) / 2
+    this.image.material.uniforms.rollupProgress.value = progress
+    this.image.rotation.set(0, 0, degToRad(progress * -10))
     this.frame = requestAnimationFrame(this.render)
     this.renderer.render(this.scene, this.camera)
   }

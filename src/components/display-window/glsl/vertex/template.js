@@ -1,3 +1,9 @@
+export default `
+uniform float rollupProgress;
+float easeOut(float t) {
+  return t * (2.0 - t);
+}
+
 #include <common>
 #include <uv_pars_vertex>
 #include <uv2_pars_vertex>
@@ -20,6 +26,7 @@ void main() {
 	#include <defaultnormal_vertex>
 	#endif
 	#include <begin_vertex>
+	#include <rollup_vertex>
 	#include <morphtarget_vertex>
 	#include <skinning_vertex>
 	#include <project_vertex>
@@ -28,4 +35,4 @@ void main() {
 	#include <clipping_planes_vertex>
 	#include <envmap_vertex>
 	#include <fog_vertex>
-}
+}`
