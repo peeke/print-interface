@@ -1,65 +1,39 @@
 import React, { useState } from 'react'
+import { animated, useSpring } from 'react-spring'
 
 import PrintDetail from 'templates/print-detail/PrintDetail'
 
 import DisplayWindow from 'components/display-window/DisplayWindow'
-import TextHeading from 'components/text/TextHeading'
-import TextBody from 'components/text/TextBody'
-import Price from 'components/price/Price'
-import Link from 'components/link/Link'
-import Button from 'components/button/Button'
-import SelectSize from 'components/containers/select-size/SelectSize'
+import PrintDescription from 'components/containers/print-description/PrintDescription'
 
 // Normally this would be loaded from a database or (headless) CMS
 import print from 'assets/annie-spratt-695511-unsplash.jpg'
 
-export default function Page() {
+const AnimatedDisplayWindow = animated(DisplayWindow)
+
+export default function PrintDetailPage() {
+  const [purchased, setPurchased] = useState(false)
+  const [size, setSize] = useState(1)
+
+  const animatedProps = useSpring({ value: Number(purchased) })
+  const onPurchase = () => setPurchased(true)
+
   return (
     <PrintDetail
-      window={PrintDetailWindow()}
-      description={PrintDetailDescription()}
-      specification={PrintDetailSpecification()}
-      purchase={PrintDetailPurchase()}
-      backButton={
-        <Link to="/" washed>
-          Back
-        </Link>
+      window={
+        <AnimatedDisplayWindow
+          progress={animatedProps.value}
+          src={print}
+          description="Light — 01 (A4)"
+        />
+      }
+      body={
+        <PrintDescription
+          size={size}
+          onPurchase={onPurchase}
+          onSizeChange={setSize}
+        />
       }
     />
   )
-}
-
-function PrintDetailWindow() {
-  return <DisplayWindow src={print} description="Light — 01 (A4)" />
-}
-
-function PrintDetailDescription() {
-  return (
-    <>
-      <TextHeading
-        level={1}
-        title="Abstract Background (A4)"
-        subtitle="Giclée Print"
-      />
-      <TextBody>
-        Price does not include shipping costs. Printed on high-quality
-        Hahnemühle Photo Rag fine art paper (308 gsm).
-      </TextBody>
-    </>
-  )
-}
-
-function PrintDetailSpecification() {
-  const [selected, setSelected] = useState(1)
-
-  return (
-    <>
-      <SelectSize selected={selected} onChange={setSelected} />
-      <Price amount={3500} currency="£" />
-    </>
-  )
-}
-
-function PrintDetailPurchase() {
-  return <Button type="primary">Purchase</Button>
 }

@@ -15,6 +15,10 @@ export default class DisplayWindow extends PureComponent {
     if (prevProps.src !== this.props.src) {
       this.threeDisplayWindow.setSrc(this.props.src)
     }
+
+    if (prevProps.progress !== this.props.progress) {
+      this.threeDisplayWindow.setProgress(Number(this.props.progress))
+    }
   }
 
   componentDidMount() {

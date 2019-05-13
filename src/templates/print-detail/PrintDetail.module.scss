@@ -15,32 +15,7 @@
 }
 
 .body {
-  display: flex;
-  flex-direction: column;
   align-items: stretch;
   width: 50%;
   min-height: 100vh;
-  padding: $spacing-prop;
-}
-
-.description {
-  margin-top: $spacing-l;
-  margin-bottom: $spacing-m;
-}
-
-.specification {
-  margin-top: auto;
-
-  > * {
-    margin-top: $spacing-m;
-  }
-}
-
-.purchase {
-  margin-top: $spacing-prop;
-  margin-bottom: $spacing-l;
-}
-
-.backButton {
-  order: -1;
 }

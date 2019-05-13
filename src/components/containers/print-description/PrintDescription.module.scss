@@ -1,0 +1,30 @@
+@import 'scss/constants.scss';
+
+.printDescription {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: $spacing-prop;
+}
+
+.description {
+  margin-top: $spacing-l;
+  margin-bottom: $spacing-m;
+}
+
+.specification {
+  margin-top: auto;
+
+  > * {
+    margin-top: $spacing-m;
+  }
+}
+
+.purchase {
+  margin-top: $spacing-prop;
+  margin-bottom: $spacing-l;
+}
+
+.backButton {
+  order: -1;
+}

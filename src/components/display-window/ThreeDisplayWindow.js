@@ -125,6 +125,19 @@ export default class ThreeDisplayWindow {
     })
   }
 
+  setProgress(progress) {
+    this.image.material[0].uniforms.rollupProgress.value = progress
+    this.image.material[1].uniforms.rollupProgress.value = progress
+
+    this.image.rotation.set(
+      0,
+      0.25 * progress * Math.PI,
+      degToRad(progress * -10)
+    )
+
+    this.render()
+  }
+
   updateDimensions = () => {
     const texture = this.image.material[0].map
     if (!texture) return
@@ -143,6 +156,8 @@ export default class ThreeDisplayWindow {
     const { width, height } = fitBoundingBox(boundingBox, texture.image)
     this.image.scale.set(width, height, width)
     this.image.material[0].needsUpdate = true
+
+    this.render()
   }
 
   onResize = () => {
@@ -159,18 +174,10 @@ export default class ThreeDisplayWindow {
   }
 
   render = () => {
-    const progress = (1 + Math.sin(performance.now() / 400)) / 2
-
-    this.image.material[0].uniforms.rollupProgress.value = progress
-    this.image.material[1].uniforms.rollupProgress.value = progress
-
-    this.image.rotation.set(
-      0,
-      0.25 * progress * Math.PI,
-      degToRad(progress * -10)
-    )
-    this.frame = requestAnimationFrame(this.render)
-    this.renderer.render(this.scene, this.camera)
+    this.frame && cancelAnimationFrame(this.frame)
+    this.frame = requestAnimationFrame(() => {
+      this.renderer.render(this.scene, this.camera)
+    })
   }
 
   unload() {
