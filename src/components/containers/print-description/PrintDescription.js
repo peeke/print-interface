@@ -11,7 +11,7 @@ import style from './PrintDescription.module.scss'
 
 export default function PrintDescription(props) {
   return (
-    <div className={style.printDescription}>
+    <div className={style.wrapper}>
       <div className={style.description}>
         <TextHeading
           level={1}

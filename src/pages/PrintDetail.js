@@ -15,11 +15,14 @@ export default function PrintDetailPage() {
   const [purchased, setPurchased] = useState(false)
   const [size, setSize] = useState(1)
 
-  const animatedProps = useSpring({ value: Number(purchased) })
+  const animatedProps = useSpring({
+    value: Number(purchased),
+    config: { mass: 6, tension: 200, friction: 50 }
+  })
   const onPurchase = () => setPurchased(true)
 
   return (
-    <div className={style.template}>
+    <div className={style.wrapper}>
       <div className={style.window}>
         <AnimatedDisplayWindow
           progress={animatedProps.value}
