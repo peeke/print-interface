@@ -1,6 +1,8 @@
 import React, { Children } from 'react'
 import { useTransition, animated } from 'react-spring'
 
+import delay from 'utils/delay'
+
 import style from './OptionTabs.module.scss'
 
 export default function OptionTabs(props) {
@@ -51,10 +53,13 @@ function OptionTab(props) {
         transform: 'translate3d(0,-1em,0)',
         opacity: 0
       },
-      enter: {
-        transform: 'translate3d(0,0,0)',
-        opacity: 1,
-        delay: 200
+      enter: item => async (next, cancel) => {
+        await delay(200)
+        next({
+          transform: 'translate3d(0,0,0)',
+          opacity: 1,
+          delay: 200
+        })
       },
       leave: {
         position: 'absolute',
