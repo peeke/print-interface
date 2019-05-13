@@ -40,39 +40,72 @@ export default class ThreeDisplayWindow {
     this.camera.position.z = 30
 
     const imageGeometry = new THREE.PlaneGeometry(1, 1, 100)
+
+    for (var i = 0, len = imageGeometry.faces.length; i < len; i++) {
+      var face = imageGeometry.faces[i].clone()
+      face.materialIndex = 1
+      imageGeometry.faces.push(face)
+      imageGeometry.faceVertexUvs[0].push(
+        imageGeometry.faceVertexUvs[0][i].slice(0)
+      )
+    }
+
     const uniforms = THREE.UniformsUtils.merge([
-      THREE.ShaderLib.basic.uniforms,
-      { rollupProgress: { value: 0 } },
-      { diffuse: { value: new THREE.Color('white') } },
-      { map: { value: new THREE.Texture() } }
+      THREE.ShaderLib.standard.uniforms,
+      {
+        rollupProgress: { value: 0 },
+        roughness: { value: 1 },
+        metalness: { value: 0 },
+        diffuse: { value: new THREE.Color(0xffffff) }
+      }
     ])
 
-    const material = new THREE.ShaderMaterial({
-      ...THREE.ShaderLib.basic,
+    const frontMaterial = new THREE.ShaderMaterial({
+      ...THREE.ShaderLib.standard,
       vertexShader,
       uniforms,
-      side: THREE.DoubleSide
+      side: THREE.FrontSide,
+      lights: true
     })
 
-    material.onBeforeCompile = shader => {
+    const backMaterial = new THREE.ShaderMaterial({
+      ...THREE.ShaderLib.standard,
+      vertexShader,
+      uniforms: {
+        ...uniforms,
+        roughness: { value: 1 },
+        metalness: { value: 0 }
+      },
+      side: THREE.BackSide,
+      lights: true
+    })
+
+    frontMaterial.onBeforeCompile = shader => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <rollup_vertex>',
         rollupVertexChunk
       )
     }
 
-    this.image = new THREE.Mesh(imageGeometry, material)
-    this.scene.add(this.image)
-
-    window.progress = value => {
-      this.image.material.uniforms.rollupProgress.value = value
+    backMaterial.onBeforeCompile = shader => {
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <rollup_vertex>',
+        rollupVertexChunk
+      )
     }
 
-    const light = new THREE.DirectionalLight(0xffffff, 1)
-    light.position.set(20, 10, 30)
+    this.image = new THREE.Mesh(imageGeometry, [frontMaterial, backMaterial])
+
+    this.scene.add(this.image)
+
+    const light = new THREE.DirectionalLight(0xffffff, 0.25)
+    light.position.set(0, 0, 30)
     light.lookAt(0, 0, 0)
 
     this.scene.add(light)
+
+    const ambient = new THREE.AmbientLight(0xbfbfbf)
+    this.scene.add(ambient)
 
     this.setSrc(src)
     this.render()
@@ -85,15 +118,15 @@ export default class ThreeDisplayWindow {
     this.src = src
 
     new THREE.TextureLoader().load(src, texture => {
-      this.image.material.uniforms.map.value = texture
-      this.image.material.map = texture
-      this.image.material.needsUpdate = true
+      this.image.material[0].uniforms.map.value = texture
+      this.image.material[0].map = texture
+      this.image.material[0].needsUpdate = true
       this.updateDimensions()
     })
   }
 
   updateDimensions = () => {
-    const texture = this.image.material.map
+    const texture = this.image.material[0].map
     if (!texture) return
 
     const viewportHeight = calculateViewportHeight(
@@ -109,7 +142,7 @@ export default class ThreeDisplayWindow {
 
     const { width, height } = fitBoundingBox(boundingBox, texture.image)
     this.image.scale.set(width, height, width)
-    this.image.material.needsUpdate = true
+    this.image.material[0].needsUpdate = true
   }
 
   onResize = () => {
@@ -127,8 +160,15 @@ export default class ThreeDisplayWindow {
 
   render = () => {
     const progress = (1 + Math.sin(performance.now() / 400)) / 2
-    this.image.material.uniforms.rollupProgress.value = progress
-    this.image.rotation.set(0, 0, degToRad(progress * -10))
+
+    this.image.material[0].uniforms.rollupProgress.value = progress
+    this.image.material[1].uniforms.rollupProgress.value = progress
+
+    this.image.rotation.set(
+      0,
+      0.25 * progress * Math.PI,
+      degToRad(progress * -10)
+    )
     this.frame = requestAnimationFrame(this.render)
     this.renderer.render(this.scene, this.camera)
   }
