@@ -24,7 +24,7 @@ export default function PrintDescription(props) {
         </TextBody>
       </div>
       <div className={style.specification}>
-        <SelectSize selected={props.size} onChange={props.onSizeChange} />
+        <SelectSize value={props.size} onChange={props.onSizeChange} />
         <Price amount={3500} currency="£" />
       </div>
       <div className={style.purchase}>

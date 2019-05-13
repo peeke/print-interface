@@ -13,13 +13,13 @@ const AnimatedDisplayWindow = animated(DisplayWindow)
 
 export default function PrintDetailPage() {
   const [purchased, setPurchased] = useState(false)
-  const [size, setSize] = useState(1)
+  const [size, setSize] = useState('medium')
 
   const animatedProps = useSpring({
     value: Number(purchased),
     config: { mass: 6, tension: 200, friction: 50 }
   })
-  const onPurchase = () => setPurchased(true)
+  const onPurchase = () => setPurchased(!purchased)
 
   return (
     <div className={style.wrapper}>

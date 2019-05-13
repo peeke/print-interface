@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SelectOption from 'components/select-option/SelectOption'
+import OptionTabs from 'components/option-tabs/OptionTabs'
 
 const availableSizes = [
   {
@@ -24,13 +24,9 @@ export default function SelectSize(props) {
   const labels = availableSizes.map(props => props.label)
 
   return (
-    <SelectOption
-      labels={labels}
-      selected={props.selected}
-      onChange={props.onChange}
-    >
+    <OptionTabs labels={labels} value={props.value} onChange={props.onChange}>
       {availableSizes.map(SelectSizeOption)}
-    </SelectOption>
+    </OptionTabs>
   )
 }
 
