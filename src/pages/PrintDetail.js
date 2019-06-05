@@ -14,6 +14,11 @@ const AnimatedDisplayWindow = animated(DisplayWindow)
 export default function PrintDetailPage() {
   const [purchased, setPurchased] = useState(false)
   const [size, setSize] = useState('medium')
+  const prices = {
+    small: 3500,
+    medium: 4550,
+    large: 12000
+  }
 
   const animatedProps = useSpring({
     value: Number(purchased),
@@ -33,6 +38,7 @@ export default function PrintDetailPage() {
       <div className={style.body}>
         <PrintDescription
           size={size}
+          price={prices[size]}
           onPurchase={onPurchase}
           onSizeChange={setSize}
         />

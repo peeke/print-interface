@@ -1,19 +1,28 @@
 import React from 'react'
+import { useSpring, animated } from 'react-spring'
 
 import style from './Price.module.scss'
 
-const formatDecimal = number => (number + '00').slice(0, 2)
-
-const getPriceComponents = amount => [
-  Math.floor(amount / 100),
-  formatDecimal(amount % 100)
-]
+const formatPrice = amount => {
+  const int = Math.floor(amount / 100)
+  const decimal = (Math.floor(amount % 100) + '00').slice(0, 2)
+  return [int, decimal].join('.')
+}
 
 export default function Price(props) {
-  const [int, decimal] = getPriceComponents(props.amount)
+  const { amount } = useSpring({
+    amount: props.amount,
+    config: { mass: 1, tension: 100, friction: 20, clamp: true }
+  })
+
   return (
     <div className={style.price}>
-      {props.currency} {int}.{decimal}
+      <span>{props.currency}&nbsp;</span>
+      <animated.span>{amount.interpolate(formatPrice)}</animated.span>
     </div>
   )
+}
+
+Price.defaultProps = {
+  amount: 0
 }

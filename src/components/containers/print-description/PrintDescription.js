@@ -25,7 +25,7 @@ export default function PrintDescription(props) {
       </div>
       <div className={style.specification}>
         <SelectSize value={props.size} onChange={props.onSizeChange} />
-        <Price amount={3500} currency="£" />
+        <Price amount={props.price} currency="£" />
       </div>
       <div className={style.purchase}>
         <Button type="primary" onClick={props.onPurchase}>
