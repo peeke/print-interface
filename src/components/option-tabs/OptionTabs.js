@@ -1,8 +1,6 @@
 import React, { Children } from 'react'
 import { useTransition, animated } from 'react-spring'
 
-import delay from 'utils/delay'
-
 import style from './OptionTabs.module.scss'
 
 export default function OptionTabs(props) {
@@ -45,34 +43,29 @@ function OptionTabLabel(props) {
 }
 
 function OptionTab(props) {
-  const transitions = useTransition(
-    props.visible ? props.children : null,
-    null,
-    {
-      from: {
-        transform: 'translate3d(0,-1em,0)',
-        opacity: 0
-      },
-      enter: item => async (next, cancel) => {
-        await delay(200)
-        next({
-          transform: 'translate3d(0,0,0)',
-          opacity: 1,
-          delay: 200
-        })
-      },
-      leave: {
-        position: 'absolute',
-        top: 0,
-        transform: 'translate3d(0,1em,0)',
-        opacity: 0
-      }
+  const transitions = useTransition(props.visible, null, {
+    from: {
+      transform: 'translate3d(0,-1em,0)',
+      opacity: 0
+    },
+    enter: {
+      transform: 'translate3d(0,0,0)',
+      opacity: 1,
+      trail: 200
+    },
+    leave: {
+      position: 'absolute',
+      top: 0,
+      transform: 'translate3d(0,1em,0)',
+      opacity: 0
     }
-  )
+  })
 
-  return transitions.map(({ item, props, key }) => (
-    <animated.div key={key} style={props}>
-      {item}
-    </animated.div>
-  ))
+  return transitions
+    .filter(({ item }) => item)
+    .map(({ props: animatedProps, key }) => (
+      <animated.div key={key} style={animatedProps}>
+        {props.children}
+      </animated.div>
+    ))
 }
